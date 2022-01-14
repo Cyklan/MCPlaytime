@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "id": "MCTimer",
+  "id": "mctimer",
   "version": "${version}",
 
   "name": "MC Timer",
