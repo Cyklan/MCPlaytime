@@ -1,6 +1,8 @@
 package de.cyklan.mctimer;
 
 import com.mojang.bridge.game.GameSession;
+import de.cyklan.mctimer.util.Config;
+import de.cyklan.mctimer.util.LevelTime;
 import de.cyklan.mctimer.util.Position;
 import io.github.cottonmc.cotton.gui.client.CottonHud;
 import io.github.cottonmc.cotton.gui.widget.WDynamicLabel;
@@ -16,6 +18,8 @@ public class Timer {
     private Date timerStartTime;
 
     private String world;
+    private LevelTime times;
+    private Config config;
 
     private boolean isRunning = false;
     private long lastTimerTime;
@@ -91,5 +95,21 @@ public class Timer {
     public void setWorldName(String world) {
         this.world = world;
         MCTimer.LOGGER.info("World name: " + world);
+    }
+
+    public void setLevelTimes(LevelTime times) {
+        this.times = times;
+    }
+
+    public LevelTime getTimes() {
+        return this.times;
+    }
+
+    public void setConfig(Config config) {
+        this.config = config;
+    }
+
+    public Config getConfig() {
+        return config;
     }
 }
