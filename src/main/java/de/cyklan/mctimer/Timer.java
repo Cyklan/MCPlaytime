@@ -1,13 +1,13 @@
 package de.cyklan.mctimer;
 
 import com.mojang.bridge.game.GameSession;
+import de.cyklan.mctimer.GUI.ConfigScreen;
 import de.cyklan.mctimer.util.Config;
 import de.cyklan.mctimer.util.LevelTime;
 import de.cyklan.mctimer.util.Loader;
 import de.cyklan.mctimer.util.Position;
 import io.github.cottonmc.cotton.gui.client.CottonHud;
 import io.github.cottonmc.cotton.gui.widget.WDynamicLabel;
-import io.github.cottonmc.cotton.gui.widget.data.Color;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.WorldSavePath;
 
@@ -41,7 +41,7 @@ public class Timer {
         int minutes = (int) ((elapsedMillis / (1000*60)) % 60);
         int hours   = (int) ((elapsedMillis / (1000*60*60)) % 24);
 
-        if (this.config.getShowHours()) {
+        if (this.config.getShowHours() || hours > 0) {
             sb.append(String.format("%02d", hours));
             sb.append(":");
         }
@@ -70,8 +70,7 @@ public class Timer {
         this.timerStartTime = new Date();
         this.isRunning = true;
 
-        this.widget = new WDynamicLabel(this::getTimerText, Color.RED_DYE.toRgb());
-        CottonHud.add(this.widget, 10, 10, this.widget.getWidth(), this.widget.getHeight());
+        this.showTimer();
     }
 
     public void stop() {
@@ -81,6 +80,24 @@ public class Timer {
         this.lastTimerTime = 0;
         Loader loader = new Loader();
         loader.writeTimes(this.times);
+    }
+
+    public void showTimer() {
+        this.widget = new WDynamicLabel(this::getTimerText, this.config.getRgbColor());
+        CottonHud.add(this.widget, 10, 10, this.widget.getWidth(), this.widget.getHeight());
+    }
+
+    public void removeTimer() {
+        CottonHud.remove(this.widget);
+    }
+
+    public void reloadTimer() {
+        this.removeTimer();
+        this.showTimer();
+    }
+
+    public void openConfig() {
+        new ConfigScreen();
     }
 
     public String getWorldName() {

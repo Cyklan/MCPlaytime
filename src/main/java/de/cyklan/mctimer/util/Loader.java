@@ -20,7 +20,7 @@ public class Loader {
     public void createConfigFileIfNotExists() {
         File f = new File(FileNames.getConfigPath());
         if (createFileIfNotExists(f)) {
-            // TODO write config
+            writeConfig(new Config());
         }
     }
 
