@@ -3,6 +3,7 @@ package de.cyklan.mctimer;
 import com.mojang.bridge.game.GameSession;
 import de.cyklan.mctimer.util.Config;
 import de.cyklan.mctimer.util.LevelTime;
+import de.cyklan.mctimer.util.Loader;
 import de.cyklan.mctimer.util.Position;
 import io.github.cottonmc.cotton.gui.client.CottonHud;
 import io.github.cottonmc.cotton.gui.widget.WDynamicLabel;
@@ -17,35 +18,43 @@ public class Timer {
     private static final Timer TIMER = new Timer();
     private Date timerStartTime;
 
+    WDynamicLabel widget;
+
     private String world;
     private LevelTime times;
     private Config config;
 
     private boolean isRunning = false;
     private long lastTimerTime;
+    private long worldTime;
 
     private Position position;
 
     private String getTimerText() {
-        long elapsedMillis = Math.abs(new Date().getTime() - timerStartTime.getTime());
+        long elapsedMillis = this.worldTime + Math.abs(new Date().getTime() - timerStartTime.getTime());
         this.lastTimerTime = elapsedMillis;
 
         StringBuilder sb = new StringBuilder();
 
+        int millis = (int) (elapsedMillis % 1000);
         int seconds = (int) (elapsedMillis / 1000) % 60 ;
         int minutes = (int) ((elapsedMillis / (1000*60)) % 60);
         int hours   = (int) ((elapsedMillis / (1000*60*60)) % 24);
 
-        sb.append(String.format("%02d", hours));
-        sb.append(":");
+        if (this.config.getShowHours()) {
+            sb.append(String.format("%02d", hours));
+            sb.append(":");
+        }
 
         sb.append(String.format("%02d", minutes));
         sb.append(":");
 
         sb.append(String.format("%02d", seconds));
-        sb.append(":");
 
-        sb.append(String.format("%03d", elapsedMillis % 1000));
+        if (this.config.getShowMillis()) {
+            sb.append(":");
+            sb.append(String.format("%03d", millis));
+        }
 
         return sb.toString();
     }
@@ -57,26 +66,21 @@ public class Timer {
     public void start() {
         this.loadWorldName();
         MCTimer.LOGGER.info(this.world);
+        this.worldTime = this.times.getTime(this.world);
         this.timerStartTime = new Date();
         this.isRunning = true;
 
-        WDynamicLabel label = new WDynamicLabel(() -> this.getTimerText(), Color.RED_DYE.toRgb());
-        CottonHud.add(label, 10, 10, label.getWidth(), label.getHeight());
-        // CottonHud.add(this.getWidget(), 10 + this.getWidget().getWidth(), 10, this.getWidget().getWidth(), this.getWidget().getHeight());
+        this.widget = new WDynamicLabel(this::getTimerText, Color.RED_DYE.toRgb());
+        CottonHud.add(this.widget, 10, 10, this.widget.getWidth(), this.widget.getHeight());
     }
 
     public void stop() {
         if (!this.isRunning) return;
         this.isRunning = false;
-    }
-
-    // TODO
-    private void calculatePositioning() {
-    }
-
-    public void updateScreenPosition() {
-        // int width = MinecraftClient.getInstance().currentScreen.width;
-        // int height = MinecraftClient.getInstance().currentScreen.height;
+        this.times.setTime(this.world, this.lastTimerTime);
+        this.lastTimerTime = 0;
+        Loader loader = new Loader();
+        loader.writeTimes(this.times);
     }
 
     public String getWorldName() {

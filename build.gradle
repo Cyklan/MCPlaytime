@@ -15,11 +15,8 @@ repositories {
 		name = "CottonMC"
 		url = "https://server.bbkr.space/artifactory/libs-release"
 	}
-	// Add repositories to retrieve artifacts from in here.
-	// You should only use this when depending on other mods because
-	// Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
-	// See https://docs.gradle.org/current/userguide/declaring_repositories.html
-	// for more information about repositories.
+
+	maven { url "https://maven.shedaniel.me/" }
 }
 
 dependencies {
@@ -33,6 +30,10 @@ dependencies {
 
 	// GUI Library
 	modImplementation include("io.github.cottonmc:LibGui:5.2.0+1.18")
+
+	modApi("me.shedaniel.cloth:cloth-config-fabric:6.1.48") {
+		exclude(group: "net.fabricmc.fabric-api")
+	}
 }
 
 processResources {

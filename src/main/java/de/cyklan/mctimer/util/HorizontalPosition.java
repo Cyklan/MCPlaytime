@@ -1,7 +1,7 @@
 package de.cyklan.mctimer.util;
 
 public enum HorizontalPosition {
-    TOP,
+    LEFT,
     CENTER,
-    BOTTOM
+    RIGHT
 }

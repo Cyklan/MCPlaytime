@@ -16,6 +16,6 @@ public class ClientMixin {
     private void onResolutionChanged(CallbackInfo info) {
         if (MinecraftClient.getInstance().currentScreen == null) return;
 
-        Timer.getInstance().updateScreenPosition();
+        // Timer.getInstance().updateScreenPosition();
     }
 }

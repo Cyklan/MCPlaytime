@@ -1,8 +1,9 @@
 package de.cyklan.mctimer.util;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
-public class LevelTime {
+public class LevelTime implements Serializable {
     private HashMap<String, Long> levelTimes;
 
     public LevelTime() {
