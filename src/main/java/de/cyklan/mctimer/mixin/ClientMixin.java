@@ -14,8 +14,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class ClientMixin {
     @Inject(at = @At("TAIL"), method = "onResolutionChanged")
     private void onResolutionChanged(CallbackInfo info) {
-        if (MinecraftClient.getInstance().currentScreen == null) return;
-
-        // Timer.getInstance().updateScreenPosition();
+        Timer.getInstance().reloadTimer();
     }
+
+
 }

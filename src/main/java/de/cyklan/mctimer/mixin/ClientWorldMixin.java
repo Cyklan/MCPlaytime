@@ -1,12 +1,9 @@
 package de.cyklan.mctimer.mixin;
 
-import com.mojang.bridge.game.GameSession;
-import com.mojang.bridge.launcher.SessionEventListener;
-import de.cyklan.mctimer.MCTimer;
 import de.cyklan.mctimer.Timer;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.util.Window;
 import net.minecraft.client.world.ClientWorld;
-import net.minecraft.util.WorldSavePath;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -18,6 +15,7 @@ import java.util.function.BooleanSupplier;
 public class ClientWorldMixin {
 
     private static boolean hasStartedTicking = false;
+    private Window lastTickWindow;
 
     @Inject(at = @At("HEAD"), method = "tick")
     private void tick(BooleanSupplier shouldKeepTicking, CallbackInfo info) {
@@ -25,7 +23,17 @@ public class ClientWorldMixin {
             this.hasStartedTicking = true;
             Timer.getInstance().start();
             final String[] world = {""};
+        } else {
+            if (this.lastTickWindow != null) {
+                Window thisTickWindow = MinecraftClient.getInstance().getWindow();
+                if (this.lastTickWindow.getHeight() != thisTickWindow.getHeight() ||
+                        this.lastTickWindow.getWidth() != thisTickWindow.getWidth()) {
+                    Timer.getInstance().reloadTimer();
+                }
+            }
         }
+
+        this.lastTickWindow = MinecraftClient.getInstance().getWindow();
     }
     @Inject(at = @At("HEAD"), method = "disconnect")
     private void disconnect(CallbackInfo ci) {

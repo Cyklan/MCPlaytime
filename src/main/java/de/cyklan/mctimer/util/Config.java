@@ -8,10 +8,13 @@ public class Config implements Serializable {
     private HorizontalPosition horizontalPosition = HorizontalPosition.LEFT;
     private VerticalPosition verticalPosition = VerticalPosition.TOP;
 
-    private int rgbColor = Color.RED_DYE.toRgb();
+    // a nice red tone :)
+    private int rgbColor = 0xFFF07167;
 
     private boolean showHours = true;
     private boolean showMillis = true;
+
+    private Position position = new Position(10, 10);
 
     public HorizontalPosition getHorizontalPosition() {
         return horizontalPosition;
@@ -51,5 +54,13 @@ public class Config implements Serializable {
 
     public void setShowMillis(boolean showMillis) {
         this.showMillis = showMillis;
+    }
+
+    public Position getPosition() {
+        return position;
+    }
+
+    public void setPosition(Position position) {
+        this.position = position;
     }
 }

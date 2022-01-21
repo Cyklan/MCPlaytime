@@ -5,9 +5,9 @@ import de.cyklan.mctimer.GUI.ConfigScreen;
 import de.cyklan.mctimer.util.Config;
 import de.cyklan.mctimer.util.LevelTime;
 import de.cyklan.mctimer.util.Loader;
-import de.cyklan.mctimer.util.Position;
 import io.github.cottonmc.cotton.gui.client.CottonHud;
 import io.github.cottonmc.cotton.gui.widget.WDynamicLabel;
+import io.github.cottonmc.cotton.gui.widget.data.HorizontalAlignment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.WorldSavePath;
 
@@ -27,8 +27,6 @@ public class Timer {
     private boolean isRunning = false;
     private long lastTimerTime;
     private long worldTime;
-
-    private Position position;
 
     private String getTimerText() {
         long elapsedMillis = this.worldTime + Math.abs(new Date().getTime() - timerStartTime.getTime());
@@ -83,8 +81,30 @@ public class Timer {
     }
 
     public void showTimer() {
+        if (!this.isRunning) return;
         this.widget = new WDynamicLabel(this::getTimerText, this.config.getRgbColor());
-        CottonHud.add(this.widget, 10, 10, this.widget.getWidth(), this.widget.getHeight());
+        this.updateHorizontalAlignment();
+        this.config.getPosition().updatePosition(
+                this.config.getHorizontalPosition(),
+                this.config.getVerticalPosition(),
+                this.widget.getWidth(),
+                this.widget.getHeight()
+        );
+        CottonHud.add(
+                this.widget,
+                this.config.getPosition().getX(),
+                this.config.getPosition().getY(),
+                this.widget.getWidth(),
+                this.widget.getHeight()
+        );
+    }
+
+    private void updateHorizontalAlignment() {
+        switch (this.config.getHorizontalPosition()) {
+            case LEFT -> this.widget.setAlignment(HorizontalAlignment.LEFT);
+            case CENTER -> this.widget.setAlignment(HorizontalAlignment.CENTER);
+            case RIGHT -> this.widget.setAlignment(HorizontalAlignment.RIGHT);
+        }
     }
 
     public void removeTimer() {
@@ -100,10 +120,6 @@ public class Timer {
         new ConfigScreen();
     }
 
-    public String getWorldName() {
-        return this.world;
-    }
-
     public void loadWorldName() {
         GameSession session = MinecraftClient.getInstance().getGame().getCurrentSession();
         if (session.isRemoteServer()) {
@@ -113,17 +129,9 @@ public class Timer {
         }
     }
 
-    public void setWorldName(String world) {
-        this.world = world;
-        MCTimer.LOGGER.info("World name: " + world);
-    }
 
     public void setLevelTimes(LevelTime times) {
         this.times = times;
-    }
-
-    public LevelTime getTimes() {
-        return this.times;
     }
 
     public void setConfig(Config config) {
