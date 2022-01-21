@@ -4,16 +4,16 @@ import java.io.Serializable;
 import java.util.HashMap;
 
 public class LevelTime implements Serializable {
-    private HashMap<String, Long> levelTimes;
+    private final HashMap<String, Long> levelTimes;
 
     public LevelTime() {
-        this.levelTimes = new HashMap<String, Long>();
+        this.levelTimes = new HashMap<>();
     }
 
     public long getTime(String world) {
         Long levelTime = this.levelTimes.get(world);
         if (levelTime == null) {
-            this.setTime(world, (long)0);
+            this.setTime(world, 0);
             return 0;
         }
 

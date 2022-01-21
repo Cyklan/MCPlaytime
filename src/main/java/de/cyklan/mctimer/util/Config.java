@@ -1,7 +1,5 @@
 package de.cyklan.mctimer.util;
 
-import io.github.cottonmc.cotton.gui.widget.data.Color;
-
 import java.io.Serializable;
 
 public class Config implements Serializable {

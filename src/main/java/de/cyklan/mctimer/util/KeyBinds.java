@@ -11,6 +11,7 @@ public class KeyBinds {
     public KeyBinds() {
         this.registerOptions();
         this.registerToggleTimerVisibility();
+        this.registerToggleTimerRunning();
     }
 
     private void registerToggleTimerRunning() {

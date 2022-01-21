@@ -11,18 +11,16 @@ public class Converter {
     private final ObjectMapper mapper = new ObjectMapper(new Gson());
 
     public String objectToJSON(Object obj) {
-        String json = mapper.writeValueAsString(obj);
-        return json;
+        return mapper.writeValueAsString(obj);
     }
 
     public <T> T JSONToObject(String json, Class<T> typeParameterClass) {
-        T obj = mapper.readValue(json, typeParameterClass);
-        return obj;
+        return mapper.readValue(json, typeParameterClass);
     }
 
     public byte[] objectToBytes(Object obj) {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        ObjectOutputStream out = null;
+        ObjectOutputStream out;
         byte[] bytes = null;
         try {
             out = new ObjectOutputStream(bos);
@@ -42,7 +40,7 @@ public class Converter {
 
     public Object bytesToObject(byte[] bytes) {
         ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
-        ObjectInput in = null;
+        ObjectInput in;
 
         Object o = null;
         try {

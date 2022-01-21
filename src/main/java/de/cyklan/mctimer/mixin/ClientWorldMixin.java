@@ -19,10 +19,9 @@ public class ClientWorldMixin {
 
     @Inject(at = @At("HEAD"), method = "tick")
     private void tick(BooleanSupplier shouldKeepTicking, CallbackInfo info) {
-        if (!this.hasStartedTicking) {
-            this.hasStartedTicking = true;
+        if (!hasStartedTicking) {
+            hasStartedTicking = true;
             Timer.getInstance().start();
-            final String[] world = {""};
         } else {
             if (this.lastTickWindow != null) {
                 Window thisTickWindow = MinecraftClient.getInstance().getWindow();
@@ -37,7 +36,7 @@ public class ClientWorldMixin {
     }
     @Inject(at = @At("HEAD"), method = "disconnect")
     private void disconnect(CallbackInfo ci) {
-        this.hasStartedTicking = false;
+        hasStartedTicking = false;
         Timer.getInstance().stop();
     }
 }

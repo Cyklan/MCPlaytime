@@ -122,7 +122,7 @@ public class Timer {
 
     public void loadWorldName() {
         GameSession session = MinecraftClient.getInstance().getGame().getCurrentSession();
-        if (session.isRemoteServer()) {
+        if (session != null && session.isRemoteServer()) {
             this.world = Objects.requireNonNull(MinecraftClient.getInstance().getCurrentServerEntry()).address;
         } else {
             this.world = Objects.requireNonNull(MinecraftClient.getInstance().getServer()).getSavePath(WorldSavePath.ROOT).getParent().getFileName().toString();

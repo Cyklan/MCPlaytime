@@ -56,43 +56,43 @@ public class ConfigScreen {
     private BooleanListEntry hoursOption(ConfigEntryBuilder builder) {
         return builder.startBooleanToggle(new LiteralText("Always Show Hours"), config.getShowHours())
                 .setDefaultValue(config.getShowHours())
-                .setSaveConsumer((value) -> config.setShowHours(value))
+                .setSaveConsumer(config::setShowHours)
                 .build();
     }
 
     private BooleanListEntry millisOption(ConfigEntryBuilder builder) {
         return builder.startBooleanToggle(new LiteralText("Show Milliseconds"), config.getShowMillis())
                 .setDefaultValue(config.getShowMillis())
-                .setSaveConsumer((value) -> config.setShowMillis(value))
+                .setSaveConsumer(config::setShowMillis)
                 .build();
     }
 
     private ColorEntry colorOption(ConfigEntryBuilder builder) {
         return builder.startAlphaColorField(new LiteralText("Color"), config.getRgbColor())
                 .setDefaultValue(config.getRgbColor())
-                .setSaveConsumer((value) -> config.setRgbColor(value))
+                .setSaveConsumer(config::setRgbColor)
                 .build();
     }
 
-    private EnumListEntry horizontalOption(ConfigEntryBuilder builder) {
+    private EnumListEntry<HorizontalPosition> horizontalOption(ConfigEntryBuilder builder) {
         return builder.startEnumSelector(
                     new LiteralText("Horizontal Position"),
                     HorizontalPosition.class,
                     config.getHorizontalPosition()
                 )
                 .setDefaultValue(config.getHorizontalPosition())
-                .setSaveConsumer((value) -> config.setHorizontalPosition(value))
+                .setSaveConsumer(config::setHorizontalPosition)
                 .build();
     }
 
-    private EnumListEntry verticalOption(ConfigEntryBuilder builder) {
+    private EnumListEntry<VerticalPosition> verticalOption(ConfigEntryBuilder builder) {
         return builder.startEnumSelector(
                         new LiteralText("Vertical Position"),
                         VerticalPosition.class,
                         config.getVerticalPosition()
                 )
                 .setDefaultValue(config.getVerticalPosition())
-                .setSaveConsumer((value) -> config.setVerticalPosition(value))
+                .setSaveConsumer(config::setVerticalPosition)
                 .build();
     }
 }
