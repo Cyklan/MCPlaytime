@@ -1,5 +1,6 @@
 package de.cyklan.mctimer;
 
+import de.cyklan.mctimer.util.KeyBinds;
 import de.cyklan.mctimer.util.Loader;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientBlockEntityEvents;
@@ -28,17 +29,6 @@ public class MCTimer implements ModInitializer {
 		loader.createConfigFileIfNotExists();
 		Timer.getInstance().setConfig(loader.readConfig());
 
-		KeyBinding keyBinding = KeyBindingHelper.registerKeyBinding(new KeyBinding(
-				"MCTimer Options",
-				InputUtil.Type.KEYSYM,
-				GLFW.GLFW_KEY_O,
-				"MCTimer"
-		));
-
-		ClientTickEvents.END_CLIENT_TICK.register(client -> {
-			while (keyBinding.wasPressed()) {
-				Timer.getInstance().openConfig();
-			}
-		});
+		new KeyBinds();
 	}
 }
