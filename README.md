@@ -1,9 +1,10 @@
-# Fabric Example Mod
+# MC Timer
 
-## Setup
+A Minecraft mod that adds a timer to your screen, tracking the time you spend in each world.
 
-For setup instructions please see the [fabric wiki page](https://fabricmc.net/wiki/tutorial:setup) that relates to the IDE that you are using.
+## Features
 
-## License
-
-This template is available under the CC0 license. Feel free to learn from it and incorporate it in your own projects.
+- [x] Change Timer Color
+- [x] 9 different screen positions
+- [x] scales with GUI
+- [x] Hotkeys 🎉
