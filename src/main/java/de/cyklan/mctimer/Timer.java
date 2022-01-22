@@ -17,6 +17,7 @@ import java.util.Objects;
 public class Timer {
     private static final Timer TIMER = new Timer();
     private Date timerStartTime;
+    private Date timerStopTime;
 
     WDynamicLabel widget;
 
@@ -29,7 +30,12 @@ public class Timer {
     private long worldTime;
 
     private String getTimerText() {
-        long elapsedMillis = this.worldTime + Math.abs(new Date().getTime() - timerStartTime.getTime());
+        long elapsedMillis;
+        if (this.isRunning) {
+            elapsedMillis = this.worldTime + Math.abs(new Date().getTime() - timerStartTime.getTime());
+        } else {
+            elapsedMillis = this.worldTime + Math.abs(timerStopTime.getTime() - timerStartTime.getTime());
+        }
         this.lastTimerTime = elapsedMillis;
 
         StringBuilder sb = new StringBuilder();
@@ -61,23 +67,45 @@ public class Timer {
         return TIMER;
     }
 
+    public void toggleTimer() {
+        if (this.isRunning) {
+            this.stop(false);
+        } else {
+            this.start(false);
+        }
+    }
+
     public void start() {
+        this.start(true);
+    }
+
+    public void start(boolean showTimer) {
         this.loadWorldName();
-        MCTimer.LOGGER.info(this.world);
         this.worldTime = this.times.getTime(this.world);
         this.timerStartTime = new Date();
         this.isRunning = true;
 
-        this.showTimer();
+        if (showTimer) {
+            this.showTimer();
+        }
     }
 
     public void stop() {
+        this.stop(true);
+    }
+
+    public void stop(boolean hideTimer) {
         if (!this.isRunning) return;
+        this.timerStopTime = new Date();
         this.isRunning = false;
         this.times.setTime(this.world, this.lastTimerTime);
         this.lastTimerTime = 0;
         Loader loader = new Loader();
         loader.writeTimes(this.times);
+
+        if (hideTimer) {
+            this.removeTimer();
+        }
     }
 
     public void showTimer() {

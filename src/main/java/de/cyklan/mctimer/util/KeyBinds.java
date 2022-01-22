@@ -24,8 +24,7 @@ public class KeyBinds {
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (keyBinding.wasPressed()) {
-                // TODO
-                // make timer pause
+                Timer.getInstance().toggleTimer();
             }
         });
     }
