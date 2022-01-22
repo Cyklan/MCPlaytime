@@ -19,7 +19,8 @@ public class Timer {
     private Date timerStartTime;
     private Date timerStopTime;
 
-    WDynamicLabel widget;
+    private WDynamicLabel widget;
+    private boolean isWidgetVisible;
 
     private String world;
     private LevelTime times;
@@ -75,6 +76,14 @@ public class Timer {
         }
     }
 
+    public void toggleTimerVisibility() {
+        if (this.isWidgetVisible) {
+            this.removeTimer();
+        } else {
+            this.showTimer();
+        }
+    }
+
     public void start() {
         this.start(true);
     }
@@ -110,6 +119,7 @@ public class Timer {
 
     public void showTimer() {
         if (!this.isRunning) return;
+        this.isWidgetVisible = true;
         this.widget = new WDynamicLabel(this::getTimerText, this.config.getRgbColor());
         this.updateHorizontalAlignment();
         this.config.getPosition().updatePosition(
@@ -136,6 +146,7 @@ public class Timer {
     }
 
     public void removeTimer() {
+        this.isWidgetVisible = false;
         CottonHud.remove(this.widget);
     }
 

@@ -33,14 +33,13 @@ public class KeyBinds {
         KeyBinding keyBinding = KeyBindingHelper.registerKeyBinding(new KeyBinding(
            "Toggle Timer Visibility",
            InputUtil.Type.KEYSYM,
-           GLFW.GLFW_KEY_U,
+           GLFW.GLFW_KEY_V,
            "MCTimer"
         ));
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (keyBinding.wasPressed()) {
-                // TODO
-                // toggle timer visibility
+                Timer.getInstance().toggleTimerVisibility();
             }
         });
     }
